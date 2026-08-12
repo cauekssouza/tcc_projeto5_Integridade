@@ -10,16 +10,31 @@ use Symfony\Component\HttpFoundation\Response;
 class ValidatePathEncoding
 {
     /**
-     * @throws MalformedUrlException
+     * Validate that the incoming request path is correctly URL-encoded
+     * and contains valid UTF-8 after decoding.
+     *
+     * @throws \Illuminate\Http\Exceptions\MalformedUrlException
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $path = rawurldecode($request->path());
+        $path = $request->path();
 
-        if (! mb_check_encoding($path, 'UTF-8')) {
-            throw new MalformedUrlException();
+        if ($this->hasMalformedPercentEncoding($path)) {
+            throw new MalformedUrlException;
+        }
+
+        if (! mb_check_encoding(rawurldecode($path), 'UTF-8')) {
+            throw new MalformedUrlException;
         }
 
         return $next($request);
+    }
+
+    /**
+     * Determine whether the path contains an invalid percent-encoded sequence.
+     */
+    private function hasMalformedPercentEncoding(string $path): bool
+    {
+        return preg_match('/%(?![0-9A-Fa-f]{2})/', $path) === 1;
     }
 }
