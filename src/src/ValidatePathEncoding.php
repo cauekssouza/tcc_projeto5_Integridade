@@ -1,28 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Illuminate\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Exceptions\MalformedUrlException;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class ValidatePathEncoding
+final class ValidatePathEncoding
 {
     /**
      * Validate that the incoming request has a valid UTF-8 encoded path.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Illuminate\Http\Exceptions\MalformedUrlException
+     * @throws MalformedUrlException
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
-        $decodedPath = rawurldecode($request->path());
+        $path = rawurldecode($request->path());
 
-        if (! mb_check_encoding($decodedPath, 'UTF-8')) {
-            throw new MalformedUrlException;
+        if (! mb_check_encoding($path, 'UTF-8')) {
+            throw new MalformedUrlException();
         }
 
         return $next($request);
