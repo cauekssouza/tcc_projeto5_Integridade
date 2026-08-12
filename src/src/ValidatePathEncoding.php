@@ -13,7 +13,7 @@ class ValidatePathEncoding
      * Validate that the incoming request path is correctly URL-encoded
      * and contains valid UTF-8 after decoding.
      *
-     * @throws \Illuminate\Http\Exceptions\MalformedUrlException
+     * @throws MalformedUrlException
      */
     public function handle(Request $request, Closure $next): Response
     {
