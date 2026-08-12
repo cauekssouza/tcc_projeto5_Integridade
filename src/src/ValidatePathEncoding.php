@@ -12,8 +12,6 @@ use Symfony\Component\HttpFoundation\Response;
 final class ValidatePathEncoding
 {
     /**
-     * Validate that the incoming request has a valid UTF-8 encoded path.
-     *
      * @throws MalformedUrlException
      */
     public function handle(Request $request, Closure $next): Response
