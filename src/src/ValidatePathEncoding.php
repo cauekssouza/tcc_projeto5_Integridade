@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Illuminate\Http\Middleware;
 
 use Closure;
@@ -9,7 +7,7 @@ use Illuminate\Http\Exceptions\MalformedUrlException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-final class ValidatePathEncoding
+class ValidatePathEncoding
 {
     /**
      * @throws MalformedUrlException
